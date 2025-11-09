@@ -1,561 +1,556 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="en">
-<head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="Food Habits - Promoting healthy and sustainable eating habits for students and communities." name="description"/>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>FOOD HABITS — Home</title>
-<meta content="Student-driven project promoting healthy food habits and balanced living." name="description"/>
-<meta content="healthy food, nutrition, junk food, students, community, health awareness" name="keywords"/>
-<link href="https://example.com/" rel="canonical"/>
-<!-- Open Graph -->
-<meta content="FOOD HABITS — Learn healthy food choices" property="og:title"/>
-<meta content="Student project: guides and resources about healthy food habits and effects of junk food." property="og:description"/>
-<meta content="website" property="og:type"/>
-<meta content="assets/og-image.png" property="og:image"/>
-<meta content="summary_large_image" name="twitter:card"/>
-<!-- Favicon placeholder -->
-<link href="assets/favicon.png" rel="icon" type="image/png"/>
-<!-- Fonts: Playfair Display (headings) + Poppins (body) -->
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Food Habits — Eat Smart, Live Better</title>
+  <meta name="description" content="Student project: Food Habits — tips, awareness, and simple recipes to build healthy daily routines." />
+  <style>
     :root{
-      --bg:#fcfbf8;
-      --muted:#556;
-      --accent:#2a9d8f;
-      --card:#ffffff;
-      --maxw:1100px;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+      --bg:#0f1724;
+      --card:#0b1220;
+      --muted:#9aa7b2;
+      --accent1:#ff7a59;
+      --accent2:#ffd166;
+      --glass: rgba(255,255,255,0.04);
+      --radius:16px;
+      --max:1200px;
+      --font-sans: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
     }
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#f6f8f7);color:var(--muted)}
-    a{color:inherit;text-decoration:none}
-    img.responsive{max-width:100%;height:auto;display:block;border-radius:10px}
-
-    /* skip link */
-    .skip-link{position:absolute;left:-999px;top:auto;overflow:hidden;background:#000;color:#fff;padding:8px 12px;border-radius:6px;z-index:100}
-    .skip-link:focus{left:8px;top:8px}
-
-    header{padding:18px 20px;display:flex;align-items:center;justify-content:space-between;max-width:var(--maxw);margin:0 auto}
-    .logo{display:flex;gap:12px;align-items:center}
-    .mark{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#264653);display:grid;place-items:center;color:#fff;font-weight:600}
-    nav.main-nav{position:relative}
-    nav.main-nav ul{display:flex;gap:12px;list-style:none;margin:0;padding:0}
-    nav.main-nav li{margin:0}
-    .nav-link{position:relative;display:inline-block;padding:8px 12px;border-radius:8px;transition:transform .18s ease,color .18s ease,opacity .18s ease}
-    .nav-link:hover{transform:translateY(-3px)}
-    .nav-link.active{color:var(--accent);font-weight:600}
-    .nav-underline{position:absolute;height:3px;background:var(--accent);left:0;bottom:0;border-radius:3px;transition:width .22s cubic-bezier(.2,.9,.3,1),transform .22s cubic-bezier(.2,.9,.3,1),left .22s cubic-bezier(.2,.9,.3,1);width:0}
-    .ripple{position:absolute;border-radius:50%;transform:scale(0);pointer-events:none;opacity:.5;background:rgba(0,0,0,0.08);animation:ripple 600ms linear}
-    @keyframes ripple{to{transform:scale(6);opacity:0}}
-
-    main{max-width:var(--maxw);margin:16px auto;padding:0 20px}
-    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(30,40,40,0.04);margin-bottom:16px}
-    h1{margin:0;font-size:26px;color:#153}
-    h2{margin:0 0 8px;font-size:20px;color:#163}
-    p.lead{margin:8px 0 0;color:#364}
-    .grid{display:grid;gap:14px}
-    @media(min-width:820px){.grid.cols-2{grid-template-columns:repeat(2,1fr)}.grid.cols-3{grid-template-columns:repeat(3,1fr)}}
-    .gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:12px}
-    ul.habits{list-style:inside disc;margin:0;padding:0 0 0 14px}
-    footer{margin-top:18px;padding:18px 20px;background:transparent;color:#586;display:flex;justify-content:center}
-    .small{font-size:14px}
-    .link-like{color:#0b6;cursor:pointer;text-decoration:underline}
-    .page{display:none}
-    .page.active{display:block}
-    .chart-wrap{max-width:720px;margin:12px 0}
-    .notes{font-size:13px;color:#475}
-
-    /* HERO VISUAL */
-    .hero-visual{position:relative;overflow:hidden;border-radius:12px;margin-bottom:18px}
-    .hero-bg{position:absolute;inset:0;background-image:url('assets/hero-bg.jpg');background-size:cover;background-position:center center;filter:contrast(.95) saturate(.95);transform:scale(1.05);transition:transform 12s linear}
-    .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(8,27,20,0.22), rgba(255,255,255,0.12));backdrop-filter: blur(2px)}
-    .hero-inner{position:relative;z-index:3;padding:36px 20px;color:var(--muted)}
-    .hero-title{font-size:32px;color:#0b3b2f;margin:0 0 10px;line-height:1.05}
-    .hero-tagline{margin:0 0 10px;position:relative;display:inline-block}
-    .tagline-text{position:relative;z-index:2}
-    .tagline-highlight{position:absolute;left:0;right:0;height:8px;border-radius:6px;bottom:-6px;background:linear-gradient(90deg, rgba(42,157,143,0.18), rgba(38,70,83,0.12));transform-origin:left center;transform:scaleX(0);transition:transform .6s cubic-bezier(.2,.9,.3,1);z-index:1;pointer-events:none}
-    .hero-inner .cta{display:inline-block;padding:10px 16px;border-radius:10px;background:linear-gradient(90deg,var(--accent),#264653);color:#fff;text-decoration:none;box-shadow:0 8px 24px rgba(42,157,143,0.06)}
-    .hero-bg.animate{animation:slow-pan 22s linear infinite;transform-origin:center}
-    @keyframes slow-pan{0%{transform:scale(1.05) translateY(0)}50%{transform:scale(1.07) translateY(-3%)}100%{transform:scale(1.05) translateY(0)}}
-    .fade-on-load{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.9,.3,1)}
-    .fade-on-load.in{opacity:1;transform:none}
-    .tagline-active .tagline-highlight{transform:scaleX(1);transition-delay:.12s}
-
-    @media(max-width:640px){.hero-title{font-size:22px}.hero-inner{padding:22px}}
-    @media(max-width:520px){nav.main-nav ul{gap:6px;flex-wrap:wrap}}
-    <!-- Font and color overrides -->
-  </style>
-  <!-- Font and color overrides -->
-  <style>
-    :root {
-      --font-heading: "Playfair Display", Georgia, "Times New Roman", serif;
-      --font-body: "Poppins", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-      ...
+    html,body{height:100%;}
+    body{
+      margin:0; font-family:var(--font-sans); background: radial-gradient(1200px 600px at 10% 10%, rgba(255,122,89,0.04), transparent), linear-gradient(180deg,#071019 0%, #071827 60%); color:#e6eef3; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      line-height:1.5; -webkit-tap-highlight-color:transparent; padding-bottom:120px; transition:background .3s ease, color .3s ease;
     }
+
+    /* layout */
+    .container{max-width:var(--max); margin:0 auto; padding:36px 20px;}
+    header{display:flex; align-items:center; justify-content:space-between; gap:20px; position:sticky; top:12px; background:linear-gradient(180deg, rgba(7,16,25,0.6), rgba(7,16,25,0.12)); padding:10px 18px; border-radius:14px; z-index:20}
+    .brand{display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit}
+    .logo{width:48px; height:48px; border-radius:12px; background:linear-gradient(135deg,var(--accent1),var(--accent2)); display:flex; align-items:center; justify-content:center; font-weight:700; color:#08101a}
+    nav{display:flex; gap:18px; align-items:center}
+    nav a{color:var(--muted); text-decoration:none; font-weight:600; font-size:15px}
+    nav a:hover{color:var(--accent2)}
+    .cta{background:linear-gradient(90deg,var(--accent2),var(--accent1)); color:#07101a; padding:10px 14px; border-radius:12px; font-weight:700; text-decoration:none}
+
+    /* hero */
+    .hero{display:grid; grid-template-columns:1fr 460px; gap:28px; align-items:center; margin-top:18px}
+    .hero-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); border-radius:18px; padding:28px; box-shadow: 0 8px 40px rgba(0,0,0,0.6); backdrop-filter: blur(6px)}
+    h1{font-size:38px; margin:0 0 10px 0; letter-spacing:-0.4px}
+    p.lead{color:var(--muted); margin:0 0 18px 0}
+    .hero-cta{display:flex; gap:12px; align-items:center}
+    .btn{padding:12px 16px; border-radius:12px; background:transparent; border:1px solid rgba(255,255,255,0.06); color:inherit; cursor:pointer}
+    .btn.primary{background:linear-gradient(90deg,var(--accent1),var(--accent2)); border:none; color:#07101a}
+
+    .nutrients{display:flex; gap:12px; margin-top:12px}
+    .nutri{flex:1; background:var(--glass); padding:12px; border-radius:12px; text-align:center; transition:transform .28s ease}
+    .nutri:hover{transform:translateY(-6px)}
+    .nutri strong{display:block; font-size:16px}
+    .hero-visual{position:relative; height:340px; border-radius:14px; overflow:hidden}
+    .hero-visual img{width:100%; height:100%; object-fit:cover; display:block}
+    .floating-shape{position:absolute; inset:auto 18px 18px auto; width:92px; height:92px; border-radius:12px; background:linear-gradient(135deg, rgba(255,122,89,0.16), rgba(255,209,102,0.14)); transform:translate3d(0,0,0); animation:float 6s ease-in-out infinite}
+    @keyframes float{0%{transform:translateY(0)}50%{transform:translateY(-12px)}100%{transform:translateY(0)}}
+
+    /* features */
+    .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:22px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:18px; border-radius:12px; transition:transform .36s ease, box-shadow .36s ease}
+    .card:hover{transform:translateY(-8px); box-shadow:0 18px 40px rgba(2,6,23,0.6)}
+    .muted{color:var(--muted)}
+
+    /* reveal animation */
+    .reveal{opacity:0; transform:translateY(18px) scale(.995); transition:opacity .6s ease, transform .6s ease}
+    .reveal.visible{opacity:1; transform:translateY(0) scale(1)}
+
+    /* list styles */
+    dl{display:grid; grid-template-columns:repeat(2,1fr); gap:12px}
+    dt{font-weight:700}
+    dd{margin:6px 0 12px 0; color:var(--muted)}
+
+    /* gallery */
+    .gallery{display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:12px}
+    figure{position:relative; overflow:hidden; border-radius:10px; background:rgba(255,255,255,0.04); transition:transform .3s ease, box-shadow .3s ease}
+    figure:hover{transform:scale(1.03); box-shadow:0 10px 25px rgba(0,0,0,0.35)}
+    figure img{width:100%; height:180px; object-fit:cover; display:block}
+    figcaption{padding:8px 10px; font-size:14px; color:var(--muted); text-align:center}
+
+    /* tips list */
+    .tips{display:flex; gap:12px; flex-direction:column; margin-top:18px}
+    .tip{background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent); padding:12px; border-radius:12px; border-left:4px solid rgba(255,255,255,0.03)}
+
+    /* footer */
+    footer{margin-top:46px; padding:24px; text-align:center; color:var(--muted)}
+
+    /* small helpers */
+    .small{font-size:13px}
+    a.no-deco{text-decoration:none}
+
+    /* responsive */
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .gallery{grid-template-columns:repeat(2,1fr)}
+      dl{grid-template-columns:1fr}
+    }
+    @media (max-width:520px){
+      nav{display:none}
+      .hero-visual{height:220px}
+      .grid{grid-template-columns:1fr}
+      .gallery{grid-template-columns:1fr}
+    }
+
+    /* subtle micro-interactions */
+    .pulse{animation:pulse 2.6s infinite}
+    @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
+
+    /* theme (light) */
+    body.light{background:linear-gradient(180deg,#f7f9fb,#eef3f6); color:#0b1720}
+    body.light header{background:rgba(255,255,255,0.9)}
+    body.light .logo{color:#fff}
+    body.light .hero-card, body.light .card, body.light .tip{background:linear-gradient(180deg, rgba(10,20,30,0.02), rgba(10,20,30,0.01)); border:1px solid rgba(10,20,30,0.04)}
+
+    /* contact bar fade support (initially hidden) */
+    .contact-bar { opacity: 0; transform: translateY(8px); transition:opacity .35s ease, transform .35s ease; }
+    .contact-bar.visible { opacity: 1; transform: translateY(0); }
+
   </style>
-  </style>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/><link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet"/></head>
+</head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-<div class="container-fluid">
-<a class="navbar-brand" href="#">Food Habits</a>
-<button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
-<span class="navbar-toggler-icon"></span>
-</button>
-<div class="collapse navbar-collapse" id="navbarNav">
-<ul class="navbar-nav ms-auto">
-<li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-<li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-<li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
-<li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-</ul>
-</div>
-</div>
-</nav>
+  <div class="container">
+    <header>
+      <a class="brand" href="#">
+        <div class="logo">FH</div>
+        <div>
+          <div style="font-weight:700; font-size:16px">Food Habits</div>
+          <div class="small muted">Eat smart · Live better</div>
+        </div>
+      </a>
 
-<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script><div class="container mt-5"><a class="skip-link" href="#maincontent">Skip to content</a><header>
-<div aria-hidden="false" class="logo">
-<div class="mark">FH</div>
-<div>
-<div style="font-size:15px;color:#163">FOOD HABITS</div>
-<div style="font-size:12px;color:#476;margin-top:4px">by students for community</div>
-</div>
-</div>
-<nav aria-label="Main navigation" class="main-nav">
-<ul>
-<li><a class="nav-link" data-link="" href="#/">Home</a></li>
-<li><a class="nav-link" data-link="" href="#/junk">Junk Food Effects</a></li>
-<li><a class="nav-link" data-link="" href="#/about">About</a></li>
-<li><a class="nav-link" data-link="" href="#/services">Services</a></li>
-<li><a class="nav-link" data-link="" href="#/gallery">Gallery</a></li>
-<li><a class="nav-link" data-link="" href="#/contact">Contact</a></li>
-</ul>
-<div aria-hidden="true" class="nav-underline"></div>
-</nav>
-</header><main id="maincontent">
-<!-- HOME: inline everything -->
-<section aria-labelledby="homeHeading" class="page active" id="home">
-<!-- HERO -->
-<section class="hero-visual">
-<div aria-label="Healthy food background image" class="hero-bg" role="img"></div>
-<div class="hero-overlay"></div>
-<div class="hero-inner" style="max-width:var(--maxw);margin:0 auto;padding:40px 20px;">
-<h1 class="hero-title fade-on-load" id="homeHeading">Learn healthy food habits that last</h1>
-<p class="hero-tagline fade-on-load" data-delay="120">
-<span class="tagline-text">Simple, practical tips and short guides</span>
-<span aria-hidden="true" class="tagline-highlight"></span>
-</p>
-<p class="lead fade-on-load" data-delay="240">Practical advice for students and the community to build lifelong healthy routines.</p>
-<div style="height:16px"></div>
-<a class="cta fade-on-load" data-delay="360" href="#/services">Explore Services</a>
-</div>
-</section>
-<!-- ABOUT -->
-<div class="card" id="about-inline">
-<h2>About Us</h2>
-<h3>Who We Are</h3>
-<p>Welcome to <em>Food Habits</em> — a student-driven initiative focused on spreading awareness about healthy and sustainable eating. Our mission is to inspire people to make simple, mindful food choices that lead to a better life.</p>
-<p>We believe that food connects people. It reflects our culture, habits, and emotions. By understanding what we eat and why we eat, we can build a healthier relationship with food — one that supports both our body and our planet.</p>
-<h3>What We Do</h3>
-<ul class="small">
-<li>Balanced nutrition and meal planning</li>
-<li>The impact of processed food on health</li>
-<li>Mindful eating and hydration</li>
-<li>Local and sustainable food choices</li>
-</ul>
-</div>
-<!-- SERVICES -->
-<div class="card" id="services-inline">
-<h2>Our Services / Healthy Tips</h2>
-<h3>Nutrition Awareness</h3>
-<p class="small">We provide basic knowledge about essential nutrients, food groups, and how they support the body.</p>
-<h3>Healthy Lifestyle Guidance</h3>
-<p class="small">Simple guidance for everyday health — how to plan balanced meals, avoid excessive junk food, and maintain a consistent eating schedule.</p>
-<h3>Smart Eating Habits</h3>
-<p class="small">Learn to listen to your body. Eat slowly, enjoy your food, and stop when you’re satisfied — not stuffed.</p>
-<h3>Hydration and Energy</h3>
-<p class="small">Drinking enough water is just as important as eating right. Staying hydrated boosts concentration, energy, and overall body performance.</p>
-<h3>Seasonal and Local Foods</h3>
-<p class="small">We encourage choosing fresh, locally grown fruits and vegetables. Seasonal produce is more nutritious, eco-friendly, and supports local farmers.</p>
-<h3>Community and Sharing</h3>
-<p class="small">Food brings people together. We promote group discussions, awareness activities, and shared learning to build a healthier community.</p>
-</div>
-<!-- GALLERY -->
-<div class="card" id="gallery-inline">
-<h2>Gallery</h2>
-<p class="notes">Drop any images into the <code>assets</code> folder. The gallery below is dynamic and will show any images you upload automatically.</p>
-<div aria-live="polite" class="gallery-grid" id="galleryHome"></div>
-</div>
-<!-- CONTACT -->
-<div class="card" id="contact-inline">
-<h2>Contact Us</h2>
-<p>We’d love to hear from you! Whether you want to share your healthy food journey, collaborate on awareness campaigns, or simply learn more — we’re here to connect.</p>
-<ul class="small">
-<li>Email: <a href="mailto:foodhabits.project@gmail.com">foodhabits.project@gmail.com</a></li>
-<li>Phone: +91 98765 43210</li>
-<li>Location: Green Valley College Campus, Room 204</li>
-</ul>
-<p class="small">Follow us: Instagram | Facebook | X (Twitter) | YouTube</p>
-</div>
-</section>
-<!-- SEPARATE LINKABLE PAGES (same content) -->
-<section class="page" id="about">
-<div class="card"><h1>About Us</h1><p>Welcome to Food Habits — spreading awareness about healthy eating and sustainability.</p></div>
-</section>
-<section class="page" id="services">
-<div class="card"><h1>Our Services / Healthy Tips</h1><p>Guidance on nutrition, meal planning, hydration, and lifestyle balance.</p></div>
-</section>
-<section class="page" id="gallery">
-<div class="card"><h1>Gallery</h1><div aria-live="polite" class="gallery-grid" id="galleryPage"></div></div>
-</section>
-<section class="page" id="contact">
-<div class="card"><h1>Contact Us</h1><p>Email: <a href="mailto:foodhabits.project@gmail.com">foodhabits.project@gmail.com</a></p><p>Phone: +91 98765 43210</p></div>
-</section>
-<!-- JUNK FOOD PAGE -->
-<section class="page" id="junk">
-<div class="card">
-<h1>Effects of Junk Food on the Modern Generation</h1>
-<p class="lead">Frequent junk-food consumption is linked to physical and mental health problems. Below is an illustrative summary with a simple bar chart showing common effects.</p>
-<div class="chart-wrap">
-<canvas aria-label="Junk food effects" id="junkChart" role="img"></canvas>
-</div>
-</div>
-</section>
-</main><footer>
-<div class="small">Copyright © All rights reserved USHA.</div>
-</footer><script>
-  /* NAV: underline + ripple + active state */
-  (function(){
-    const nav = document.querySelector('.main-nav');
-    if(!nav) return;
-    const links = Array.from(nav.querySelectorAll('.nav-link'));
-    const underline = nav.querySelector('.nav-underline');
+      <nav>
+        <a href="#home">Home</a>
+        <a href="#determinants">Determinants</a>
+        <a href="#habits">Healthy Habits</a>
+        <a href="#why">Why</a>
+        <a href="#tips">Tips</a>
+        <a href="#gallery">Gallery</a>
+        <a href="#contact">Contact</a>
+        <a class="cta no-deco" href="#tips">Get Started</a>
+      </nav>
 
-    function setActiveFromHash(){
-      links.forEach(l=>l.classList.remove('active'));
-      const hash = location.hash || '#/';
-      // find link with same href
-      let matched = links.find(l => l.getAttribute('href') === hash);
-      if(!matched){
-        // fallback: if hash is home '#/' match home
-        matched = links.find(l => l.getAttribute('href') === '#/');
-      }
-      if(matched) matched.classList.add('active');
-      moveUnderlineTo(matched || links[0]);
+      <div style="display:flex; gap:8px; align-items:center">
+        <button class="btn" id="themeToggle" title="Toggle theme">theme</button>
+      </div>
+    </header>
+
+    <main>
+
+      <section id="home" class="hero">
+        <div class="hero-card reveal">
+          <h1>Small habits. Big change.</h1>
+          <p class="lead">Practical food wisdom for students and busy lives — easy recipes, realistic routines, and ideas that stick.</p>
+          <div class="hero-cta">
+            <button class="btn" onclick="scrollToSection('determinants')">Learn More</button>
+            <button class="btn primary" onclick="scrollToSection('tips')">Start a Habit</button>
+          </div>
+
+          <div class="nutrients" aria-hidden>
+            <div class="nutri"><strong>Vitamins</strong><span class="small muted">leafy greens & citrus</span></div>
+            <div class="nutri"><strong>Fiber</strong><span class="small muted">whole grains & legumes</span></div>
+            <div class="nutri"><strong>Protein</strong><span class="small muted">plant & lean sources</span></div>
+          </div>
+
+          <p class="small muted" style="margin-top:14px">Pro tip: add one colorful vegetable to your plate today — tiny changes add up.</p>
+        </div>
+
+        <div class="hero-visual reveal" aria-hidden>
+          <img src="images/hero-bg.jpg" alt="Fresh food"/>
+          <div class="floating-shape pulse"></div>
+        </div>
+      </section>
+
+      <section id="determinants" style="margin-top:28px">
+        <h2>Major determinants of food choice</h2>
+        <p class="muted">Food choices are shaped by a web of factors. Understanding these helps us design better habits and healthier routines.</p>
+
+        <dl class="reveal" style="margin-top:12px">
+          <div>
+            <dt>Biological — hunger, appetite, taste</dt>
+            <dd>Innate signals and sensory likes guide what and when we eat. Taste preferences often form early and influence long-term choices.</dd>
+          </div>
+          <div>
+            <dt>Economic — cost, income, availability</dt>
+            <dd>Budget and local food availability limit options. Smart shopping and simple meal planning make healthier choices affordable.</dd>
+          </div>
+          <div>
+            <dt>Physical — access, skills, time</dt>
+            <dd>Distance to markets, cooking skills, and time constraints affect whether we pick instant meals or cook from scratch.</dd>
+          </div>
+          <div>
+            <dt>Social — culture, family, peers</dt>
+            <dd>Shared meals, cultural traditions, and peer habits shape both what tastes normal and what’s acceptable to eat.</dd>
+          </div>
+          <div>
+            <dt>Psychological — mood, stress, habits</dt>
+            <dd>Emotions can promote comfort eating or skip meals; stress management supports healthier food choices.</dd>
+          </div>
+          <div>
+            <dt>Knowledge — attitudes, beliefs, information</dt>
+            <dd>Nutrition knowledge, food beliefs, and attitudes guide daily food decisions and long-term habits.</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section id="habits" style="margin-top:24px">
+        <h2>Healthy food habits</h2>
+        <p class="muted">Simple, sustainable habits create the strongest health gains. Below are practical, student-friendly habits you can start this week.</p>
+
+        <div class="grid" style="margin-top:12px">
+          <div class="card reveal">
+            <h3>Leafy greens every few days</h3>
+            <p class="muted">Spinach, kale, and local greens are cheap and nutrient-dense. Add them to smoothies, sandwiches, or stir-fries.</p>
+          </div>
+
+          <div class="card reveal">
+            <h3>Choose whole grains</h3>
+            <p class="muted">Replace white rice or refined bread with brown rice, oats, or millets for more energy and better digestion.</p>
+          </div>
+
+          <div class="card reveal">
+            <h3>Never skip breakfast</h3>
+            <p class="muted">A balanced morning meal helps concentration and steadies your appetite — try oats, eggs, or yogurt with fruit.</p>
+          </div>
+
+          <div class="card reveal">
+            <h3>Include protein in every meal</h3>
+            <p class="muted">Legumes, tofu, eggs, fish, or lean meat keep you full and support recovery after activities.</p>
+          </div>
+
+          <div class="card reveal">
+            <h3>Hydrate like a pro</h3>
+            <p class="muted">Carry a bottle, set small goals (a glass every hour), and prefer water over sugary drinks.</p>
+          </div>
+
+          <div class="card reveal">
+            <h3>Limit ultra-processed foods</h3>
+            <p class="muted">Treat packaged snacks and sodas as occasional treats — whole foods give more nutrition per calorie.</p>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:12px; margin-top:18px; flex-wrap:wrap">
+          <div class="card reveal" style="flex:1; min-width:260px">
+            <h4>Habit plan (2 weeks)</h4>
+            <p class="small muted">Pick one habit (eat breakfast, drink more water, or add greens). Focus for 14 days, then add another. Use small rewards.</p>
+          </div>
+
+          <div class="card reveal" style="flex:1; min-width:260px">
+            <h4>Student budget tips</h4>
+            <ul class="small muted">
+              <li>Buy seasonal produce</li>
+              <li>Cook in batches and freeze portions</li>
+              <li>Use pulses and eggs as low-cost proteins</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="why" style="margin-top:24px">
+        <h2>Why food habits matter</h2>
+        <p class="muted">Healthy habits affect energy, mood, study performance, and long-term health. The aim is not perfection but consistency.</p>
+        <div class="grid" style="margin-top:12px">
+          <div class="card reveal"><h3>Energy</h3><p class="muted">Balanced meals fuel study and activity.</p></div>
+          <div class="card reveal"><h3>Focus</h3><p class="muted">Stable blood sugar supports concentration.</p></div>
+          <div class="card reveal"><h3>Well-being</h3><p class="muted">Good food helps mood and resilience.</p></div>
+        </div>
+      </section>
+
+      <section id="tips" style="margin-top:24px">
+        <h2>Practical tips</h2>
+        <div class="tips">
+          <div class="tip reveal"><strong>Balanced breakfast:</strong> whole grain, protein, and fruit — example: millet porridge with banana and seeds.</div>
+          <div class="tip reveal"><strong>Quick lunch:</strong> grain bowl with leftover rice, roasted veggies, and a protein source.</div>
+          <div class="tip reveal"><strong>Snack swap:</strong> replace chips with roasted spiced chickpeas or fresh fruit.
+          </div>
+          <div class="tip reveal"><strong>Hydration trick:</strong> set a phone reminder every 45–60 minutes to take sips.</div>
+          <div class="tip reveal"><strong>Mindful bite:</strong> put your phone away for 10 minutes while eating to notice hunger and fullness signals.</div>
+        </div>
+      </section>
+
+      <section id="factors" style="margin-top:24px">
+        <h2>Factors shaping food habits</h2>
+        <p class="muted">A quick look at additional forces that form routines and preferences.</p>
+        <ul class="small muted" style="margin-top:12px">
+          <li>Education: awareness and skills to cook and plan meals.</li>
+          <li>Values: ethical or cultural choices (sustainability, vegetarianism).</li>
+          <li>Health: managing conditions or athletic goals.</li>
+          <li>Technology: recipes, delivery apps, and nutrition trackers.</li>
+          <li>Social status: social events and peer habits influence choices.</li>
+        </ul>
+      </section>
+
+      <!-- Gallery (integrated) -->
+      <section id="gallery" style="margin-top:24px">
+        <h2>Gallery</h2>
+        <p class="muted">Snapshots from our fieldwork and food stories — students engaging the local community and traditional meals.</p>
+
+        <div class="gallery">
+          <figure class="reveal">
+            <img src="images/hero-bg.jpg" alt="Traditional Indian meal">
+            <figcaption>Traditional Indian meal rich in lentils, rice, greens, and spices — balanced with protein, fiber, and vitamins.</figcaption>
+          </figure>
+
+          <figure class="reveal">
+            <img src="images/Image1.jpg" alt="Students survey at food stall">
+            <figcaption>Students conducting food awareness surveys at a local food stall in Nellore, Andhra Pradesh.</figcaption>
+          </figure>
+
+          <figure class="reveal">
+            <img src="images/image2.jpg" alt="Student interacting with shopkeeper">
+            <figcaption>Engaging the community: student explains healthy food habits to a local shopkeeper.</figcaption>
+          </figure>
+
+          <figure class="reveal">
+            <img src="images/image3.jpg" alt="Group discussion in market">
+            <figcaption>Students discuss nutrition and food labeling awareness with vendors.</figcaption>
+          </figure>
+
+          <figure class="reveal">
+            <img src="images/image4.jpg" alt="Field survey">
+            <figcaption>Practical outreach — gathering public opinions on daily food choices for project documentation.</figcaption>
+          </figure>
+
+          <figure class="reveal">
+            <img src="images/image5.jpg" alt="Survey continuation">
+            <figcaption>Team members collecting responses to analyze urban eating habits.</figcaption>
+          </figure>
+
+          <figure class="reveal">
+            <img src="images/image6.jpg" alt="Community interaction">
+            <figcaption>Field activity highlighting student involvement in promoting nutritional awareness.</figcaption>
+          </figure>
+
+          <figure class="reveal">
+            <img src="images/image7.jpg" alt="Students field interaction with vendor">
+            <figcaption>Students interacting with a local vendor during the food awareness survey at Ramesh Reddy Nagar, Nellore, Andhra Pradesh.</figcaption>
+          </figure>
+
+        </div>
+      </section>
+
+      <section id="about" style="margin-top:24px">
+        <h2>About Food Habits</h2>
+        <p class="muted">Food Habits is a student-led initiative to make healthy eating approachable. We combine nutrition basics, budget-friendly solutions, and community events to encourage lasting change.</p>
+      </section>
+
+      <section id="contact" style="margin-top:40px;">
+  <h2>Contact</h2>
+
+  <div class="card reveal" style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:20px; margin-top:18px; padding:22px;">
+    <div style="flex:1; min-width:240px;">
+      <h3 style="margin:0; font-size:20px;">T Usha Sri</h3>
+      <p class="small muted" style="margin:4px 0;">Student | Food Habits Project Contributor</p>
+      <p class="small muted" style="margin:4px 0;">
+        Email:
+        <a href="mailto:ushasri.t12@gmail.com" style="color:var(--accent2); text-decoration:none;">
+          ushasri.t12@gmail.com
+        </a>
+      </p>
+      <p class="small muted" style="margin:4px 0;">
+        LinkedIn:
+        <a href="https://www.linkedin.com/in/thippavajjala-venkata-sai-ushasri-534831351?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+           target="_blank" style="color:var(--accent2); text-decoration:none;">
+          /in/thippavajjala-venkata-sai-ushasri-534831351
+        </a>
+      </p>
+      <p class="small muted" style="margin:4px 0;">
+        X:
+        <a href="https://x.com/UshaSri281166" target="_blank" style="color:var(--accent2); text-decoration:none;">
+          @UshaSri281166
+        </a>
+      </p>
+    </div>
+
+    <!-- Contact icons -->
+    <div class="contact-icons" style="display:flex; gap:20px; font-size:26px; align-items:center;">
+      <!-- Email -->
+      <a href="mailto:ushasri.t12@gmail.com" target="_blank" title="Email Usha Sri" class="icon-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <rect x="3" y="5" width="18" height="14" rx="2" ry="2"/>
+          <polyline points="3,7 12,13 21,7"/>
+        </svg>
+      </a>
+
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/in/thippavajjala-venkata-sai-ushasri-534831351?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+         target="_blank" title="LinkedIn Profile" class="icon-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M16 8a6 6 0 0 1 6 6v6h-4v-6a2 2 0 0 0-4 0v6h-4v-6a6 6 0 0 1 6-6z"/>
+          <rect x="2" y="9" width="4" height="12"/>
+          <circle cx="4" cy="4" r="2"/>
+        </svg>
+      </a>
+
+      <!-- X / Twitter -->
+      <a href="https://x.com/UshaSri281166" target="_blank" title="Follow on X" class="icon-link">
+        <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="none" stroke="var(--accent2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+          <path d="M18 2h-3l-4 8L7 2H4l5 9-5 11h3l4-8 4 8h3l-5-9z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <p class="small muted" style="text-align:center; margin-top:14px;">
+    Click the icons above to connect directly with Usha Sri.
+  </p>
+
+  <style>
+    .icon-link {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:transform 0.3s ease, filter 0.3s ease;
     }
-
-    function moveUnderlineTo(link){
-      if(!link){ underline.style.width = '0'; return; }
-      const rect = link.getBoundingClientRect();
-      const parentRect = nav.getBoundingClientRect();
-      const left = rect.left - parentRect.left;
-      underline.style.left = left + 'px';
-      underline.style.width = rect.width + 'px';
+    .icon-link:hover {
+      transform:scale(1.2);
+      filter: drop-shadow(0 0 6px var(--accent2));
     }
+  </style>
+</section>
 
-    window.addEventListener('resize', ()=> {
-      const active = nav.querySelector('.nav-link.active') || links[0];
-      moveUnderlineTo(active);
-    });
+    </main>
 
-    links.forEach(l=>{
-      l.addEventListener('click', e=>{
-        // ripple
-        const rect = l.getBoundingClientRect();
-        const ripple = document.createElement('span');
-        ripple.className='ripple';
-        ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px';
-        ripple.style.left = (e.clientX - rect.left - rect.width/2) + 'px';
-        ripple.style.top = (e.clientY - rect.top - rect.height/2) + 'px';
-        l.appendChild(ripple);
-        setTimeout(()=>ripple.remove(),700);
+    <footer>
+      <div class="small muted">Made by students for the campus community — Food Habits. © 2025</div>
+    </footer>
+  </div>
 
-        // small click animation
-        l.animate([{transform:'scale(1)'},{transform:'scale(.98)'},{transform:'scale(1)'}],{duration:220,easing:'cubic-bezier(.2,.9,.3,1)'});
-
-        // update active after hash changes
-        setTimeout(()=>setActiveFromHash(),120);
-      });
-    });
-
-    window.addEventListener('hashchange', setActiveFromHash);
-    setTimeout(setActiveFromHash,80);
-    requestAnimationFrame(()=> {
-      const active = nav.querySelector('.nav-link.active') || links[0];
-      moveUnderlineTo(active);
-    });
-  })();
-
-  /* HERO: fade-in, highlight, bg pan */
-  (function(){
-    const hero = document.querySelector('.hero-visual');
-    if(!hero) return;
-    setTimeout(()=>hero.querySelector('.hero-bg')?.classList.add('animate'),240);
-    const fades = hero.querySelectorAll('.fade-on-load');
-    fades.forEach(el=>{
-      const d = parseInt(el.getAttribute('data-delay') || 0,10);
-      setTimeout(()=>el.classList.add('in'), d);
-    });
-    const tagline = hero.querySelector('.hero-tagline');
-    if(tagline){
-      setTimeout(()=>tagline.classList.add('tagline-active'),420);
-    }
-    window.addEventListener('hashchange', ()=> {
-      if(location.hash === '#/' || location.hash === '' || location.hash === '#'){
-        hero.querySelectorAll('.fade-on-load').forEach((el,i)=> {
-          el.classList.remove('in');
-          setTimeout(()=> el.classList.add('in'), 60 + i*90);
-        });
-        if(tagline){
-          tagline.classList.remove('tagline-active');
-          setTimeout(()=>tagline.classList.add('tagline-active'),320);
-        }
-      }
-    });
-  })();
-
-  /* GALLERY LOADER - manifest then probe method (supports unlimited images up to probe limit) */
-  (function galleryLoader(){
-    const ASSETS_DIR = 'assets/';
-    const MANIFEST = 'gallery.json'; // optional manifest
-    const maxProbe = 60; // increase if you expect more images
-    const EXTENSIONS = ['jpg','jpeg','png','webp'];
-
-    const homeContainer = document.getElementById('galleryHome');
-    const pageContainer = document.getElementById('galleryPage');
-
-    function renderGallery(items){
-      [homeContainer, pageContainer].forEach(c => { if(c){ c.innerHTML = ''; } });
-      items.forEach(it => {
-        const imgHome = document.createElement('img');
-        imgHome.src = ASSETS_DIR + it.file;
-        imgHome.alt = it.alt || it.file;
-        imgHome.className = 'responsive';
-        if (homeContainer) homeContainer.appendChild(imgHome);
-
-        const imgPage = document.createElement('img');
-        imgPage.src = ASSETS_DIR + it.file;
-        imgPage.alt = it.alt || it.file;
-        imgPage.className = 'responsive';
-        if (pageContainer) pageContainer.appendChild(imgPage);
-      });
-    }
-
-    fetch(ASSETS_DIR + MANIFEST, {cache: "no-store"}).then(resp => {
-      if (!resp.ok) throw new Error('No manifest');
-      return resp.json();
-    }).then(json => {
-      const items = (Array.isArray(json)) ? json.map(it => (typeof it === 'string' ? {file:it, alt:''} : it)) : [];
-      renderGallery(items);
-    }).catch(_err => {
-      const found = [];
-      const probes = [];
-      for (let i=1;i<=maxProbe;i++){
-        EXTENSIONS.forEach(ext => probes.push({name:`gallery${i}.${ext}`, idx:i}));
-      }
-      function checkNext(index){
-        if(index >= probes.length){
-          if(found.length === 0){
-            const msg = document.createElement('div');
-            msg.textContent = 'No gallery images found. Drop images into the assets/ folder (try names like gallery1.jpg, gallery2.png) or add assets/gallery.json.';
-            msg.className = 'small';
-            if(homeContainer) homeContainer.appendChild(msg);
-            if(pageContainer) pageContainer.appendChild(msg.cloneNode(true));
-          } else renderGallery(found);
-          return;
-        }
-        const p = probes[index];
-        const img = new Image();
-        img.onload = () => {
-          found.push({file:p.name, alt:p.name.replace(/\.(jpg|jpeg|png|webp)$/i,'').replace(/[-_]/g,' ')});
-          checkNext(index+1);
-        };
-        img.onerror = () => {
-          checkNext(index+1);
-        };
-        img.src = ASSETS_DIR + p.name;
-      }
-      checkNext(0);
-    });
-  })();
-
-  /* JUNK chart */
-  (function createCharts(){
-    const junkCtx = document.getElementById('junkChart')?.getContext('2d');
-    if(junkCtx){
-      new Chart(junkCtx, {
-        type: 'bar',
-        data: {
-          labels: ['Obesity risk','Tooth decay','Energy crashes','Cardio risk','Concentration'],
-          datasets: [{ label: 'Illustrative severity', data: [8,6,7,5,6], backgroundColor: ['#ffb4a2','#ffb4a2','#ffb4a2','#ffb4a2','#ffb4a2'] }]
-        },
-        options: { scales: { y: { beginAtZero:true, max:10 } }, plugins: { legend: { display:false } } }
-      });
-    }
-  })();
-
-  /* ROUTING */
-  (function routing(){
-    function showPage(route) {
-      const id = (route || '#/').replace('#/','') || 'home';
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  <script>
+    // smooth scrolling helper
+    function scrollToSection(id){
       const el = document.getElementById(id);
-      if(el) { el.classList.add('active'); window.scrollTo({top:0, behavior:'smooth'}); }
-      else { document.getElementById('home').classList.add('active'); }
+      if(!el) return window.scrollTo({top:0, behavior:'smooth'});
+      el.scrollIntoView({behavior:'smooth', block:'start'});
     }
-    window.addEventListener('hashchange', ()=> showPage(location.hash));
-    if(!location.hash) location.hash = '#/';
-    showPage(location.hash);
-  })();
-  </script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script><script>AOS.init();</script>
-  
-<script>
-/* ----- Menu sync + smooth routing patch ----- */
-(function(){
-  // helper: convert simple anchors (#about) to app route (#/about)
-  function toAppHash(h){
-    if(!h) return '#/';
-    // if already in app form or is '#/' return as-is
-    if(h.startsWith('#/')) return h;
-    // strip leading # if present
-    const id = h.replace(/^#/,'');
-    if(!id || id === '/') return '#/';
-    return '#/' + id.replace(/^\//,'');
-  }
 
-  // All link selectors we want to normalize:
-  const bootstrapNavLinks = Array.from(document.querySelectorAll('.navbar .nav-link'));
-  const internalNavLinks = Array.from(document.querySelectorAll('nav.main-nav a.nav-link, nav.main-nav a[data-link]'));
-
-  // collapse bootstrap navbar on mobile after click
-  const bsCollapseEl = document.querySelector('.navbar .navbar-collapse');
-  function collapseBootstrapNav(){
-    if(!bsCollapseEl) return;
-    const bsCollapse = bootstrapCollapseInstance(); // get instance if exists
-    if(bsCollapse && window.innerWidth < 992){ // collapse for smaller screens
-      try{ bsCollapse.hide(); }catch(e){}
-    }
-  }
-  // wrapper to safely get bootstrap Collapse instance if bootstrap loaded
-  function bootstrapCollapseInstance(){
-    try{
-      const el = bsCollapseEl;
-      if(!el) return null;
-      // Bootstrap 5 stores collapse in data-bs-toggle via Collapse.getInstance
-      if(window.bootstrap && typeof window.bootstrap.Collapse === 'function'){
-        return window.bootstrap.Collapse.getInstance(el) || new window.bootstrap.Collapse(el, {toggle:false});
-      }
-    }catch(e){}
-    return null;
-  }
-
-  // make bootstrap links set the app hash instead of plain fragment navigation
-  bootstrapNavLinks.forEach(a=>{
-    a.addEventListener('click', function(evt){
-      const href = a.getAttribute('href') || '';
-      if(!href.startsWith('#')) return; // external link or route we don't handle
-      evt.preventDefault();
-      const appHash = toAppHash(href);
-      // set hash (this triggers hashchange -> routing + UI updates)
-      location.hash = appHash;
-      // smooth scroll to target section element if it exists (fallback)
-      const targetId = appHash.replace('#/','');
-      if(targetId && document.getElementById(targetId)){
-        document.getElementById(targetId).scrollIntoView({behavior:'smooth', block:'start'});
-      } else {
-        window.scrollTo({top:0,behavior:'smooth'});
-      }
-      collapseBootstrapNav();
-    });
-  });
-
-  // ensure internal nav links also close bootstrap on click (if present) and set hash properly
-  internalNavLinks.forEach(a=>{
-    a.addEventListener('click', function(evt){
-      const href = a.getAttribute('href') || '';
-      if(href.startsWith('#') && !href.startsWith('#/')){
-        // normalize to app route
-        const appHash = toAppHash(href);
-        evt.preventDefault();
-        location.hash = appHash;
-      } else {
-        // allow normal '#/' links to behave
-        // user may click #/about which triggers hashchange anyway
-      }
-      collapseBootstrapNav();
-    });
-  });
-
-  // Keep both menus in-sync and update active state + underline (if present)
-  function syncActiveMenu(){
-    const appHash = (location.hash || '#/').replace(/^#\/?/,''); // 'about' or '' for home
-    // canonical app fragment like '#/about'
-    const canonical = '#/' + (appHash || '');
-    // helper to set active on a NodeList of anchors by their href (normalize both)
-    function setActive(list){
-      list.forEach(a=>{
-        const ah = a.getAttribute('href') || '';
-        const normalized = toAppHash(ah);
-        if(normalized === canonical){
-          a.classList.add('active');
-        } else {
-          a.classList.remove('active');
+    // reveal on scroll
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
         }
+      })
+    },{threshold:0.12});
+
+    document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+    // theme toggle
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', ()=>{
+      document.body.classList.toggle('light');
+      themeToggle.innerText = document.body.classList.contains('light') ? 'light' : 'dark';
+    });
+
+    // image error fallback
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.querySelectorAll('img').forEach(img=>{
+        img.addEventListener('error', ()=>{
+          img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="600" height="400"><rect width="100%" height="100%" fill="%23081214"/><text x="50%" y="50%" fill="%23fff" dominant-baseline="middle" text-anchor="middle" font-family="Arial" font-size="18">Image not available</text></svg>'
+        })
+      })
+    });
+
+    // small entrance animation for CTA
+    const cta = document.querySelector('.cta');
+    if(cta){ setTimeout(()=>{ cta.classList.add('pulse') }, 900) }
+  </script>
+
+  <!-- Floating Contact Bar + Scroll-to-Top -->
+  <div class="contact-bar" id="contactBar" aria-hidden="false">
+    <a href="mailto:ushasri.t12@gmail.com" target="_blank" title="Email Usha Sri" aria-label="Email">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <rect x="3" y="5" width="18" height="14" rx="2" ry="2"/><polyline points="3,7 12,13 21,7"/>
+      </svg>
+    </a>
+
+    <a href="https://www.linkedin.com/in/thippavajjala-venkata-sai-ushasri-534831351?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+       target="_blank" title="LinkedIn Profile" aria-label="LinkedIn">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M16 8a6 6 0 0 1 6 6v6h-4v-6a2 2 0 0 0-4 0v6h-4v-6a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+      </svg>
+    </a>
+
+    <a href="https://x.com/UshaSri281166" target="_blank" title="Follow on X" aria-label="X">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <path d="M18 2h-3l-4 8L7 2H4l5 9-5 11h3l4-8 4 8h3l-5-9z"/>
+      </svg>
+    </a>
+
+    <button id="scrollTopBtn" title="Scroll to Top" aria-label="Scroll to top">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+        <polyline points="18 15 12 9 6 15"/>
+      </svg>
+    </button>
+  </div>
+
+  <style>
+    .contact-bar {
+      position:fixed; bottom:22px; right:22px;
+      display:flex; flex-direction:column; gap:10px;
+      background:rgba(0,0,0,0.5);
+      border-radius:16px; padding:10px;
+      backdrop-filter:blur(6px);
+      box-shadow:0 4px 20px rgba(0,0,0,0.3);
+      z-index:9999;
+      opacity:0; transform:translateY(8px);
+    }
+    .contact-bar.visible { opacity:1; transform:translateY(0); }
+    .contact-bar a, .contact-bar button {
+      display:flex; align-items:center; justify-content:center;
+      width:38px; height:38px;
+      border-radius:10px;
+      background:linear-gradient(135deg,var(--accent1),var(--accent2));
+      border:none; cursor:pointer;
+      transition:transform .3s ease, box-shadow .3s ease;
+    }
+    .contact-bar a:hover, .contact-bar button:hover {
+      transform:scale(1.2); box-shadow:0 0 10px var(--accent2);
+    }
+    #scrollTopBtn {outline:none; display:flex; align-items:center; justify-content:center;}
+    @media (max-width:600px){
+      .contact-bar{flex-direction:row; bottom:14px; right:14px; padding:8px; border-radius:12px;}
+    }
+  </style>
+
+  <script>
+    // Ensure contact-bar and scroll button behavior after DOM ready
+    document.addEventListener('DOMContentLoaded', function () {
+      const scrollTopBtn = document.getElementById("scrollTopBtn");
+      const contactBar = document.getElementById("contactBar");
+
+      // smooth scroll-to-top
+      scrollTopBtn.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
-    }
-    setActive(bootstrapNavLinks);
-    setActive(internalNavLinks);
 
-    // try to move underline if nav underline logic exists
-    try{
-      const underline = document.querySelector('.nav-underline');
-      const nav = document.querySelector('nav.main-nav');
-      if(underline && nav){
-        const active = nav.querySelector('.nav-link.active') || nav.querySelector('.nav-link');
-        if(active){
-          const rect = active.getBoundingClientRect();
-          const parentRect = nav.getBoundingClientRect();
-          underline.style.left = (rect.left - parentRect.left) + 'px';
-          underline.style.width = rect.width + 'px';
+      // show/hide scroll button & reveal contact bar smoothly
+      function updateContactBarVisibility() {
+        if (window.scrollY > 200) {
+          contactBar.classList.add('visible');
+          scrollTopBtn.style.opacity = '1';
         } else {
-          underline.style.width = '0';
+          // keep contact bar visible a tiny bit, but hide scroll button
+          contactBar.classList.remove('visible');
+          scrollTopBtn.style.opacity = '0';
         }
       }
-    }catch(e){}
-  }
 
-  window.addEventListener('hashchange', ()=> {
-    syncActiveMenu();
-    // replay hero animations if going to home
-    if(location.hash === '#/' || location.hash === '' || location.hash === '#'){
-      const hero = document.querySelector('.hero-visual');
-      if(hero){
-        // restart fades
-        hero.querySelectorAll('.fade-on-load').forEach((el,i)=>{
-          el.classList.remove('in');
-          setTimeout(()=>el.classList.add('in'), 60 + i*80);
-        });
-        const tagline = hero.querySelector('.hero-tagline');
-        if(tagline){
-          tagline.classList.remove('tagline-active');
-          setTimeout(()=>tagline.classList.add('tagline-active'), 280);
-        }
-      }
-    }
-  });
+      // start hidden and then check
+      scrollTopBtn.style.opacity = '0';
+      contactBar.classList.remove('visible');
+      updateContactBarVisibility();
 
-  // initial sync on load
-  document.addEventListener('DOMContentLoaded', function(){
-    syncActiveMenu();
-    // init AOS safely if available
-    try{ if(window.AOS) window.AOS.init(); }catch(e){}
-  });
-})();
-</script>
-
-
-</div></body>
+      window.addEventListener("scroll", updateContactBarVisibility, { passive: true });
+    });
+  </script>
+</body>
 </html>

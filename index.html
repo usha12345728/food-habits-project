@@ -1,0 +1,104 @@
+<!-- index.html - Single-page College Project: Food Habits -->
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Food Habits — College Project</title>
+<meta name="description" content="A simple responsive single-page site about food habits. Home, Services, Gallery, Contact." />
+
+
+<style>
+/* Basic reset */
+:root{
+--accent1:#ff6b6b; --accent2:#ffd93d; --accent3:#6bafff; --accent4:#8affc1; --text:#111;
+--nav-height:64px;
+--max-width:1100px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:Inter, system-ui, Arial, sans-serif;background:white;color:var(--text);}
+a{color:inherit;text-decoration:none}
+
+
+/* NAV */
+header{position:fixed;left:0;right:0;top:0;height:var(--nav-height);display:flex;align-items:center;justify-content:center;backdrop-filter: blur(6px);z-index:50}
+nav{width:100%;max-width:var(--max-width);display:flex;align-items:center;justify-content:space-between;padding:0 1rem}
+.logo{font-weight:700;letter-spacing:0.2px;font-size:1.1rem;cursor:pointer}
+.nav-links{display:flex;gap:12px}
+.nav-links button{background:transparent;border:none;padding:8px 12px;border-radius:8px;font-weight:600;cursor:pointer;transition:transform .18s ease, background .12s ease}
+.nav-links button:hover{transform:translateY(-3px)}
+
+
+/* colorful letters for logo */
+.logo span{display:inline-block;animation:logoColor 3s linear infinite}
+@keyframes logoColor{0%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(90deg)}100%{filter:hue-rotate(360deg)}}
+
+
+/* container */
+main{padding-top:calc(var(--nav-height) + 18px);max-width:var(--max-width);margin:0 auto;padding-left:1rem;padding-right:1rem}
+section{padding:46px 0;min-height:calc(100vh - var(--nav-height) - 40px);display:flex;align-items:center}
+
+
+/* HOME */
+.hero{display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:center}
+.hero-left h1{font-size:clamp(1.6rem,4vw,2.6rem);line-height:1.05}
+.multi{display:inline-block}
+.multi span{display:inline-block;padding:0 6px;animation:pop 4s ease-in-out infinite}
+.multi span:nth-child(1){color:var(--accent1)}
+.multi span:nth-child(2){color:var(--accent2)}
+.multi span:nth-child(3){color:var(--accent3)}
+.multi span:nth-child(4){color:var(--accent4)}
+@keyframes pop{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+.hero p{margin-top:12px;opacity:0.9}
+.cta-row{margin-top:18px;display:flex;gap:10px}
+.btn{padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+.btn-primary{background:linear-gradient(90deg,var(--accent3),var(--accent4));color:#042;}
+.btn-outline{background:transparent;border:2px solid rgba(0,0,0,0.06)}
+
+
+/* CARD / INFO */
+.card{padding:18px;border-radius:12px;box-shadow:0 10px 30px rgba(20,20,20,0.04);background:linear-gradient(180deg,rgba(255,255,255,0.9), #fff)}
+
+
+/* SERVICES */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.service{padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.8),#fff);box-shadow:0 6px 20px rgba(0,0,0,0.04);transition:transform .18s ease}
+.service:hover{transform:translateY(-6px)}
+
+
+/* GALLERY */
+.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.gallery-item{overflow:hidden;border-radius:8px;min-height:80px}
+.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
+.gallery-item:hover img{transform:scale(1.06)}
+
+
+/* CONTACT */
+.contact-form{max-width:560px}
+.field{display:flex;flex-direction:column;margin-bottom:12px}
+.field label{font-size:0.9rem;margin-bottom:6px}
+.field input,.field textarea{padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);font-size:0.95rem}
+.field textarea{min-height:120px;resize:vertical}
+
+
+/* footer */
+footer{padding:20px 0;text-align:center;opacity:0.7}
+
+
+/* responsive */
+@media (max-width:900px){
+.hero{grid-template-columns:1fr}
+.services-grid{grid-template-columns:repeat(2,1fr)}
+.gallery-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:600px){
+.nav-links{display:none}
+header{padding:0 12px}
+.logo{font-size:1rem}
+.services-grid{grid-template-columns:1fr}
+.gallery-grid{grid-template-columns:repeat(2,1fr)}
+}
+
+
+/* page show/hide animation */
+</html>

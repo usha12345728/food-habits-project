@@ -1,104 +1,561 @@
-<!-- index.html - Single-page College Project: Food Habits -->
-<!doctype html>
+<!DOCTYPE html>
+
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Food Habits — College Project</title>
-<meta name="description" content="A simple responsive single-page site about food habits. Home, Services, Gallery, Contact." />
-
-
+<head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="Food Habits - Promoting healthy and sustainable eating habits for students and communities." name="description"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>FOOD HABITS — Home</title>
+<meta content="Student-driven project promoting healthy food habits and balanced living." name="description"/>
+<meta content="healthy food, nutrition, junk food, students, community, health awareness" name="keywords"/>
+<link href="https://example.com/" rel="canonical"/>
+<!-- Open Graph -->
+<meta content="FOOD HABITS — Learn healthy food choices" property="og:title"/>
+<meta content="Student project: guides and resources about healthy food habits and effects of junk food." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="assets/og-image.png" property="og:image"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<!-- Favicon placeholder -->
+<link href="assets/favicon.png" rel="icon" type="image/png"/>
+<!-- Fonts: Playfair Display (headings) + Poppins (body) -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-/* Basic reset */
-:root{
---accent1:#ff6b6b; --accent2:#ffd93d; --accent3:#6bafff; --accent4:#8affc1; --text:#111;
---nav-height:64px;
---max-width:1100px;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;font-family:Inter, system-ui, Arial, sans-serif;background:white;color:var(--text);}
-a{color:inherit;text-decoration:none}
+    :root{
+      --bg:#fcfbf8;
+      --muted:#556;
+      --accent:#2a9d8f;
+      --card:#ffffff;
+      --maxw:1100px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, Arial;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,var(--bg),#f6f8f7);color:var(--muted)}
+    a{color:inherit;text-decoration:none}
+    img.responsive{max-width:100%;height:auto;display:block;border-radius:10px}
+
+    /* skip link */
+    .skip-link{position:absolute;left:-999px;top:auto;overflow:hidden;background:#000;color:#fff;padding:8px 12px;border-radius:6px;z-index:100}
+    .skip-link:focus{left:8px;top:8px}
+
+    header{padding:18px 20px;display:flex;align-items:center;justify-content:space-between;max-width:var(--maxw);margin:0 auto}
+    .logo{display:flex;gap:12px;align-items:center}
+    .mark{width:44px;height:44px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#264653);display:grid;place-items:center;color:#fff;font-weight:600}
+    nav.main-nav{position:relative}
+    nav.main-nav ul{display:flex;gap:12px;list-style:none;margin:0;padding:0}
+    nav.main-nav li{margin:0}
+    .nav-link{position:relative;display:inline-block;padding:8px 12px;border-radius:8px;transition:transform .18s ease,color .18s ease,opacity .18s ease}
+    .nav-link:hover{transform:translateY(-3px)}
+    .nav-link.active{color:var(--accent);font-weight:600}
+    .nav-underline{position:absolute;height:3px;background:var(--accent);left:0;bottom:0;border-radius:3px;transition:width .22s cubic-bezier(.2,.9,.3,1),transform .22s cubic-bezier(.2,.9,.3,1),left .22s cubic-bezier(.2,.9,.3,1);width:0}
+    .ripple{position:absolute;border-radius:50%;transform:scale(0);pointer-events:none;opacity:.5;background:rgba(0,0,0,0.08);animation:ripple 600ms linear}
+    @keyframes ripple{to{transform:scale(6);opacity:0}}
+
+    main{max-width:var(--maxw);margin:16px auto;padding:0 20px}
+    .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(30,40,40,0.04);margin-bottom:16px}
+    h1{margin:0;font-size:26px;color:#153}
+    h2{margin:0 0 8px;font-size:20px;color:#163}
+    p.lead{margin:8px 0 0;color:#364}
+    .grid{display:grid;gap:14px}
+    @media(min-width:820px){.grid.cols-2{grid-template-columns:repeat(2,1fr)}.grid.cols-3{grid-template-columns:repeat(3,1fr)}}
+    .gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:12px}
+    ul.habits{list-style:inside disc;margin:0;padding:0 0 0 14px}
+    footer{margin-top:18px;padding:18px 20px;background:transparent;color:#586;display:flex;justify-content:center}
+    .small{font-size:14px}
+    .link-like{color:#0b6;cursor:pointer;text-decoration:underline}
+    .page{display:none}
+    .page.active{display:block}
+    .chart-wrap{max-width:720px;margin:12px 0}
+    .notes{font-size:13px;color:#475}
+
+    /* HERO VISUAL */
+    .hero-visual{position:relative;overflow:hidden;border-radius:12px;margin-bottom:18px}
+    .hero-bg{position:absolute;inset:0;background-image:url('assets/hero-bg.jpg');background-size:cover;background-position:center center;filter:contrast(.95) saturate(.95);transform:scale(1.05);transition:transform 12s linear}
+    .hero-overlay{position:absolute;inset:0;background:linear-gradient(180deg, rgba(8,27,20,0.22), rgba(255,255,255,0.12));backdrop-filter: blur(2px)}
+    .hero-inner{position:relative;z-index:3;padding:36px 20px;color:var(--muted)}
+    .hero-title{font-size:32px;color:#0b3b2f;margin:0 0 10px;line-height:1.05}
+    .hero-tagline{margin:0 0 10px;position:relative;display:inline-block}
+    .tagline-text{position:relative;z-index:2}
+    .tagline-highlight{position:absolute;left:0;right:0;height:8px;border-radius:6px;bottom:-6px;background:linear-gradient(90deg, rgba(42,157,143,0.18), rgba(38,70,83,0.12));transform-origin:left center;transform:scaleX(0);transition:transform .6s cubic-bezier(.2,.9,.3,1);z-index:1;pointer-events:none}
+    .hero-inner .cta{display:inline-block;padding:10px 16px;border-radius:10px;background:linear-gradient(90deg,var(--accent),#264653);color:#fff;text-decoration:none;box-shadow:0 8px 24px rgba(42,157,143,0.06)}
+    .hero-bg.animate{animation:slow-pan 22s linear infinite;transform-origin:center}
+    @keyframes slow-pan{0%{transform:scale(1.05) translateY(0)}50%{transform:scale(1.07) translateY(-3%)}100%{transform:scale(1.05) translateY(0)}}
+    .fade-on-load{opacity:0;transform:translateY(10px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.9,.3,1)}
+    .fade-on-load.in{opacity:1;transform:none}
+    .tagline-active .tagline-highlight{transform:scaleX(1);transition-delay:.12s}
+
+    @media(max-width:640px){.hero-title{font-size:22px}.hero-inner{padding:22px}}
+    @media(max-width:520px){nav.main-nav ul{gap:6px;flex-wrap:wrap}}
+    <!-- Font and color overrides -->
+  </style>
+  <!-- Font and color overrides -->
+  <style>
+    :root {
+      --font-heading: "Playfair Display", Georgia, "Times New Roman", serif;
+      --font-body: "Poppins", Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+      ...
+    }
+  </style>
+  </style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/><link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet"/></head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<div class="container-fluid">
+<a class="navbar-brand" href="#">Food Habits</a>
+<button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbarNav" data-bs-toggle="collapse" type="button">
+<span class="navbar-toggler-icon"></span>
+</button>
+<div class="collapse navbar-collapse" id="navbarNav">
+<ul class="navbar-nav ms-auto">
+<li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+<li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+<li class="nav-item"><a class="nav-link" href="#gallery">Gallery</a></li>
+<li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+</ul>
+</div>
+</div>
+</nav>
+
+<script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script><div class="container mt-5"><a class="skip-link" href="#maincontent">Skip to content</a><header>
+<div aria-hidden="false" class="logo">
+<div class="mark">FH</div>
+<div>
+<div style="font-size:15px;color:#163">FOOD HABITS</div>
+<div style="font-size:12px;color:#476;margin-top:4px">by students for community</div>
+</div>
+</div>
+<nav aria-label="Main navigation" class="main-nav">
+<ul>
+<li><a class="nav-link" data-link="" href="#/">Home</a></li>
+<li><a class="nav-link" data-link="" href="#/junk">Junk Food Effects</a></li>
+<li><a class="nav-link" data-link="" href="#/about">About</a></li>
+<li><a class="nav-link" data-link="" href="#/services">Services</a></li>
+<li><a class="nav-link" data-link="" href="#/gallery">Gallery</a></li>
+<li><a class="nav-link" data-link="" href="#/contact">Contact</a></li>
+</ul>
+<div aria-hidden="true" class="nav-underline"></div>
+</nav>
+</header><main id="maincontent">
+<!-- HOME: inline everything -->
+<section aria-labelledby="homeHeading" class="page active" id="home">
+<!-- HERO -->
+<section class="hero-visual">
+<div aria-label="Healthy food background image" class="hero-bg" role="img"></div>
+<div class="hero-overlay"></div>
+<div class="hero-inner" style="max-width:var(--maxw);margin:0 auto;padding:40px 20px;">
+<h1 class="hero-title fade-on-load" id="homeHeading">Learn healthy food habits that last</h1>
+<p class="hero-tagline fade-on-load" data-delay="120">
+<span class="tagline-text">Simple, practical tips and short guides</span>
+<span aria-hidden="true" class="tagline-highlight"></span>
+</p>
+<p class="lead fade-on-load" data-delay="240">Practical advice for students and the community to build lifelong healthy routines.</p>
+<div style="height:16px"></div>
+<a class="cta fade-on-load" data-delay="360" href="#/services">Explore Services</a>
+</div>
+</section>
+<!-- ABOUT -->
+<div class="card" id="about-inline">
+<h2>About Us</h2>
+<h3>Who We Are</h3>
+<p>Welcome to <em>Food Habits</em> — a student-driven initiative focused on spreading awareness about healthy and sustainable eating. Our mission is to inspire people to make simple, mindful food choices that lead to a better life.</p>
+<p>We believe that food connects people. It reflects our culture, habits, and emotions. By understanding what we eat and why we eat, we can build a healthier relationship with food — one that supports both our body and our planet.</p>
+<h3>What We Do</h3>
+<ul class="small">
+<li>Balanced nutrition and meal planning</li>
+<li>The impact of processed food on health</li>
+<li>Mindful eating and hydration</li>
+<li>Local and sustainable food choices</li>
+</ul>
+</div>
+<!-- SERVICES -->
+<div class="card" id="services-inline">
+<h2>Our Services / Healthy Tips</h2>
+<h3>Nutrition Awareness</h3>
+<p class="small">We provide basic knowledge about essential nutrients, food groups, and how they support the body.</p>
+<h3>Healthy Lifestyle Guidance</h3>
+<p class="small">Simple guidance for everyday health — how to plan balanced meals, avoid excessive junk food, and maintain a consistent eating schedule.</p>
+<h3>Smart Eating Habits</h3>
+<p class="small">Learn to listen to your body. Eat slowly, enjoy your food, and stop when you’re satisfied — not stuffed.</p>
+<h3>Hydration and Energy</h3>
+<p class="small">Drinking enough water is just as important as eating right. Staying hydrated boosts concentration, energy, and overall body performance.</p>
+<h3>Seasonal and Local Foods</h3>
+<p class="small">We encourage choosing fresh, locally grown fruits and vegetables. Seasonal produce is more nutritious, eco-friendly, and supports local farmers.</p>
+<h3>Community and Sharing</h3>
+<p class="small">Food brings people together. We promote group discussions, awareness activities, and shared learning to build a healthier community.</p>
+</div>
+<!-- GALLERY -->
+<div class="card" id="gallery-inline">
+<h2>Gallery</h2>
+<p class="notes">Drop any images into the <code>assets</code> folder. The gallery below is dynamic and will show any images you upload automatically.</p>
+<div aria-live="polite" class="gallery-grid" id="galleryHome"></div>
+</div>
+<!-- CONTACT -->
+<div class="card" id="contact-inline">
+<h2>Contact Us</h2>
+<p>We’d love to hear from you! Whether you want to share your healthy food journey, collaborate on awareness campaigns, or simply learn more — we’re here to connect.</p>
+<ul class="small">
+<li>Email: <a href="mailto:foodhabits.project@gmail.com">foodhabits.project@gmail.com</a></li>
+<li>Phone: +91 98765 43210</li>
+<li>Location: Green Valley College Campus, Room 204</li>
+</ul>
+<p class="small">Follow us: Instagram | Facebook | X (Twitter) | YouTube</p>
+</div>
+</section>
+<!-- SEPARATE LINKABLE PAGES (same content) -->
+<section class="page" id="about">
+<div class="card"><h1>About Us</h1><p>Welcome to Food Habits — spreading awareness about healthy eating and sustainability.</p></div>
+</section>
+<section class="page" id="services">
+<div class="card"><h1>Our Services / Healthy Tips</h1><p>Guidance on nutrition, meal planning, hydration, and lifestyle balance.</p></div>
+</section>
+<section class="page" id="gallery">
+<div class="card"><h1>Gallery</h1><div aria-live="polite" class="gallery-grid" id="galleryPage"></div></div>
+</section>
+<section class="page" id="contact">
+<div class="card"><h1>Contact Us</h1><p>Email: <a href="mailto:foodhabits.project@gmail.com">foodhabits.project@gmail.com</a></p><p>Phone: +91 98765 43210</p></div>
+</section>
+<!-- JUNK FOOD PAGE -->
+<section class="page" id="junk">
+<div class="card">
+<h1>Effects of Junk Food on the Modern Generation</h1>
+<p class="lead">Frequent junk-food consumption is linked to physical and mental health problems. Below is an illustrative summary with a simple bar chart showing common effects.</p>
+<div class="chart-wrap">
+<canvas aria-label="Junk food effects" id="junkChart" role="img"></canvas>
+</div>
+</div>
+</section>
+</main><footer>
+<div class="small">Copyright © All rights reserved USHA.</div>
+</footer><script>
+  /* NAV: underline + ripple + active state */
+  (function(){
+    const nav = document.querySelector('.main-nav');
+    if(!nav) return;
+    const links = Array.from(nav.querySelectorAll('.nav-link'));
+    const underline = nav.querySelector('.nav-underline');
+
+    function setActiveFromHash(){
+      links.forEach(l=>l.classList.remove('active'));
+      const hash = location.hash || '#/';
+      // find link with same href
+      let matched = links.find(l => l.getAttribute('href') === hash);
+      if(!matched){
+        // fallback: if hash is home '#/' match home
+        matched = links.find(l => l.getAttribute('href') === '#/');
+      }
+      if(matched) matched.classList.add('active');
+      moveUnderlineTo(matched || links[0]);
+    }
+
+    function moveUnderlineTo(link){
+      if(!link){ underline.style.width = '0'; return; }
+      const rect = link.getBoundingClientRect();
+      const parentRect = nav.getBoundingClientRect();
+      const left = rect.left - parentRect.left;
+      underline.style.left = left + 'px';
+      underline.style.width = rect.width + 'px';
+    }
+
+    window.addEventListener('resize', ()=> {
+      const active = nav.querySelector('.nav-link.active') || links[0];
+      moveUnderlineTo(active);
+    });
+
+    links.forEach(l=>{
+      l.addEventListener('click', e=>{
+        // ripple
+        const rect = l.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        ripple.className='ripple';
+        ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px';
+        ripple.style.left = (e.clientX - rect.left - rect.width/2) + 'px';
+        ripple.style.top = (e.clientY - rect.top - rect.height/2) + 'px';
+        l.appendChild(ripple);
+        setTimeout(()=>ripple.remove(),700);
+
+        // small click animation
+        l.animate([{transform:'scale(1)'},{transform:'scale(.98)'},{transform:'scale(1)'}],{duration:220,easing:'cubic-bezier(.2,.9,.3,1)'});
+
+        // update active after hash changes
+        setTimeout(()=>setActiveFromHash(),120);
+      });
+    });
+
+    window.addEventListener('hashchange', setActiveFromHash);
+    setTimeout(setActiveFromHash,80);
+    requestAnimationFrame(()=> {
+      const active = nav.querySelector('.nav-link.active') || links[0];
+      moveUnderlineTo(active);
+    });
+  })();
+
+  /* HERO: fade-in, highlight, bg pan */
+  (function(){
+    const hero = document.querySelector('.hero-visual');
+    if(!hero) return;
+    setTimeout(()=>hero.querySelector('.hero-bg')?.classList.add('animate'),240);
+    const fades = hero.querySelectorAll('.fade-on-load');
+    fades.forEach(el=>{
+      const d = parseInt(el.getAttribute('data-delay') || 0,10);
+      setTimeout(()=>el.classList.add('in'), d);
+    });
+    const tagline = hero.querySelector('.hero-tagline');
+    if(tagline){
+      setTimeout(()=>tagline.classList.add('tagline-active'),420);
+    }
+    window.addEventListener('hashchange', ()=> {
+      if(location.hash === '#/' || location.hash === '' || location.hash === '#'){
+        hero.querySelectorAll('.fade-on-load').forEach((el,i)=> {
+          el.classList.remove('in');
+          setTimeout(()=> el.classList.add('in'), 60 + i*90);
+        });
+        if(tagline){
+          tagline.classList.remove('tagline-active');
+          setTimeout(()=>tagline.classList.add('tagline-active'),320);
+        }
+      }
+    });
+  })();
+
+  /* GALLERY LOADER - manifest then probe method (supports unlimited images up to probe limit) */
+  (function galleryLoader(){
+    const ASSETS_DIR = 'assets/';
+    const MANIFEST = 'gallery.json'; // optional manifest
+    const maxProbe = 60; // increase if you expect more images
+    const EXTENSIONS = ['jpg','jpeg','png','webp'];
+
+    const homeContainer = document.getElementById('galleryHome');
+    const pageContainer = document.getElementById('galleryPage');
+
+    function renderGallery(items){
+      [homeContainer, pageContainer].forEach(c => { if(c){ c.innerHTML = ''; } });
+      items.forEach(it => {
+        const imgHome = document.createElement('img');
+        imgHome.src = ASSETS_DIR + it.file;
+        imgHome.alt = it.alt || it.file;
+        imgHome.className = 'responsive';
+        if (homeContainer) homeContainer.appendChild(imgHome);
+
+        const imgPage = document.createElement('img');
+        imgPage.src = ASSETS_DIR + it.file;
+        imgPage.alt = it.alt || it.file;
+        imgPage.className = 'responsive';
+        if (pageContainer) pageContainer.appendChild(imgPage);
+      });
+    }
+
+    fetch(ASSETS_DIR + MANIFEST, {cache: "no-store"}).then(resp => {
+      if (!resp.ok) throw new Error('No manifest');
+      return resp.json();
+    }).then(json => {
+      const items = (Array.isArray(json)) ? json.map(it => (typeof it === 'string' ? {file:it, alt:''} : it)) : [];
+      renderGallery(items);
+    }).catch(_err => {
+      const found = [];
+      const probes = [];
+      for (let i=1;i<=maxProbe;i++){
+        EXTENSIONS.forEach(ext => probes.push({name:`gallery${i}.${ext}`, idx:i}));
+      }
+      function checkNext(index){
+        if(index >= probes.length){
+          if(found.length === 0){
+            const msg = document.createElement('div');
+            msg.textContent = 'No gallery images found. Drop images into the assets/ folder (try names like gallery1.jpg, gallery2.png) or add assets/gallery.json.';
+            msg.className = 'small';
+            if(homeContainer) homeContainer.appendChild(msg);
+            if(pageContainer) pageContainer.appendChild(msg.cloneNode(true));
+          } else renderGallery(found);
+          return;
+        }
+        const p = probes[index];
+        const img = new Image();
+        img.onload = () => {
+          found.push({file:p.name, alt:p.name.replace(/\.(jpg|jpeg|png|webp)$/i,'').replace(/[-_]/g,' ')});
+          checkNext(index+1);
+        };
+        img.onerror = () => {
+          checkNext(index+1);
+        };
+        img.src = ASSETS_DIR + p.name;
+      }
+      checkNext(0);
+    });
+  })();
+
+  /* JUNK chart */
+  (function createCharts(){
+    const junkCtx = document.getElementById('junkChart')?.getContext('2d');
+    if(junkCtx){
+      new Chart(junkCtx, {
+        type: 'bar',
+        data: {
+          labels: ['Obesity risk','Tooth decay','Energy crashes','Cardio risk','Concentration'],
+          datasets: [{ label: 'Illustrative severity', data: [8,6,7,5,6], backgroundColor: ['#ffb4a2','#ffb4a2','#ffb4a2','#ffb4a2','#ffb4a2'] }]
+        },
+        options: { scales: { y: { beginAtZero:true, max:10 } }, plugins: { legend: { display:false } } }
+      });
+    }
+  })();
+
+  /* ROUTING */
+  (function routing(){
+    function showPage(route) {
+      const id = (route || '#/').replace('#/','') || 'home';
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const el = document.getElementById(id);
+      if(el) { el.classList.add('active'); window.scrollTo({top:0, behavior:'smooth'}); }
+      else { document.getElementById('home').classList.add('active'); }
+    }
+    window.addEventListener('hashchange', ()=> showPage(location.hash));
+    if(!location.hash) location.hash = '#/';
+    showPage(location.hash);
+  })();
+  </script><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script><script>AOS.init();</script>
+  
+<script>
+/* ----- Menu sync + smooth routing patch ----- */
+(function(){
+  // helper: convert simple anchors (#about) to app route (#/about)
+  function toAppHash(h){
+    if(!h) return '#/';
+    // if already in app form or is '#/' return as-is
+    if(h.startsWith('#/')) return h;
+    // strip leading # if present
+    const id = h.replace(/^#/,'');
+    if(!id || id === '/') return '#/';
+    return '#/' + id.replace(/^\//,'');
+  }
+
+  // All link selectors we want to normalize:
+  const bootstrapNavLinks = Array.from(document.querySelectorAll('.navbar .nav-link'));
+  const internalNavLinks = Array.from(document.querySelectorAll('nav.main-nav a.nav-link, nav.main-nav a[data-link]'));
+
+  // collapse bootstrap navbar on mobile after click
+  const bsCollapseEl = document.querySelector('.navbar .navbar-collapse');
+  function collapseBootstrapNav(){
+    if(!bsCollapseEl) return;
+    const bsCollapse = bootstrapCollapseInstance(); // get instance if exists
+    if(bsCollapse && window.innerWidth < 992){ // collapse for smaller screens
+      try{ bsCollapse.hide(); }catch(e){}
+    }
+  }
+  // wrapper to safely get bootstrap Collapse instance if bootstrap loaded
+  function bootstrapCollapseInstance(){
+    try{
+      const el = bsCollapseEl;
+      if(!el) return null;
+      // Bootstrap 5 stores collapse in data-bs-toggle via Collapse.getInstance
+      if(window.bootstrap && typeof window.bootstrap.Collapse === 'function'){
+        return window.bootstrap.Collapse.getInstance(el) || new window.bootstrap.Collapse(el, {toggle:false});
+      }
+    }catch(e){}
+    return null;
+  }
+
+  // make bootstrap links set the app hash instead of plain fragment navigation
+  bootstrapNavLinks.forEach(a=>{
+    a.addEventListener('click', function(evt){
+      const href = a.getAttribute('href') || '';
+      if(!href.startsWith('#')) return; // external link or route we don't handle
+      evt.preventDefault();
+      const appHash = toAppHash(href);
+      // set hash (this triggers hashchange -> routing + UI updates)
+      location.hash = appHash;
+      // smooth scroll to target section element if it exists (fallback)
+      const targetId = appHash.replace('#/','');
+      if(targetId && document.getElementById(targetId)){
+        document.getElementById(targetId).scrollIntoView({behavior:'smooth', block:'start'});
+      } else {
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+      collapseBootstrapNav();
+    });
+  });
+
+  // ensure internal nav links also close bootstrap on click (if present) and set hash properly
+  internalNavLinks.forEach(a=>{
+    a.addEventListener('click', function(evt){
+      const href = a.getAttribute('href') || '';
+      if(href.startsWith('#') && !href.startsWith('#/')){
+        // normalize to app route
+        const appHash = toAppHash(href);
+        evt.preventDefault();
+        location.hash = appHash;
+      } else {
+        // allow normal '#/' links to behave
+        // user may click #/about which triggers hashchange anyway
+      }
+      collapseBootstrapNav();
+    });
+  });
+
+  // Keep both menus in-sync and update active state + underline (if present)
+  function syncActiveMenu(){
+    const appHash = (location.hash || '#/').replace(/^#\/?/,''); // 'about' or '' for home
+    // canonical app fragment like '#/about'
+    const canonical = '#/' + (appHash || '');
+    // helper to set active on a NodeList of anchors by their href (normalize both)
+    function setActive(list){
+      list.forEach(a=>{
+        const ah = a.getAttribute('href') || '';
+        const normalized = toAppHash(ah);
+        if(normalized === canonical){
+          a.classList.add('active');
+        } else {
+          a.classList.remove('active');
+        }
+      });
+    }
+    setActive(bootstrapNavLinks);
+    setActive(internalNavLinks);
+
+    // try to move underline if nav underline logic exists
+    try{
+      const underline = document.querySelector('.nav-underline');
+      const nav = document.querySelector('nav.main-nav');
+      if(underline && nav){
+        const active = nav.querySelector('.nav-link.active') || nav.querySelector('.nav-link');
+        if(active){
+          const rect = active.getBoundingClientRect();
+          const parentRect = nav.getBoundingClientRect();
+          underline.style.left = (rect.left - parentRect.left) + 'px';
+          underline.style.width = rect.width + 'px';
+        } else {
+          underline.style.width = '0';
+        }
+      }
+    }catch(e){}
+  }
+
+  window.addEventListener('hashchange', ()=> {
+    syncActiveMenu();
+    // replay hero animations if going to home
+    if(location.hash === '#/' || location.hash === '' || location.hash === '#'){
+      const hero = document.querySelector('.hero-visual');
+      if(hero){
+        // restart fades
+        hero.querySelectorAll('.fade-on-load').forEach((el,i)=>{
+          el.classList.remove('in');
+          setTimeout(()=>el.classList.add('in'), 60 + i*80);
+        });
+        const tagline = hero.querySelector('.hero-tagline');
+        if(tagline){
+          tagline.classList.remove('tagline-active');
+          setTimeout(()=>tagline.classList.add('tagline-active'), 280);
+        }
+      }
+    }
+  });
+
+  // initial sync on load
+  document.addEventListener('DOMContentLoaded', function(){
+    syncActiveMenu();
+    // init AOS safely if available
+    try{ if(window.AOS) window.AOS.init(); }catch(e){}
+  });
+})();
+</script>
 
 
-/* NAV */
-header{position:fixed;left:0;right:0;top:0;height:var(--nav-height);display:flex;align-items:center;justify-content:center;backdrop-filter: blur(6px);z-index:50}
-nav{width:100%;max-width:var(--max-width);display:flex;align-items:center;justify-content:space-between;padding:0 1rem}
-.logo{font-weight:700;letter-spacing:0.2px;font-size:1.1rem;cursor:pointer}
-.nav-links{display:flex;gap:12px}
-.nav-links button{background:transparent;border:none;padding:8px 12px;border-radius:8px;font-weight:600;cursor:pointer;transition:transform .18s ease, background .12s ease}
-.nav-links button:hover{transform:translateY(-3px)}
-
-
-/* colorful letters for logo */
-.logo span{display:inline-block;animation:logoColor 3s linear infinite}
-@keyframes logoColor{0%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(90deg)}100%{filter:hue-rotate(360deg)}}
-
-
-/* container */
-main{padding-top:calc(var(--nav-height) + 18px);max-width:var(--max-width);margin:0 auto;padding-left:1rem;padding-right:1rem}
-section{padding:46px 0;min-height:calc(100vh - var(--nav-height) - 40px);display:flex;align-items:center}
-
-
-/* HOME */
-.hero{display:grid;grid-template-columns:1fr 380px;gap:24px;align-items:center}
-.hero-left h1{font-size:clamp(1.6rem,4vw,2.6rem);line-height:1.05}
-.multi{display:inline-block}
-.multi span{display:inline-block;padding:0 6px;animation:pop 4s ease-in-out infinite}
-.multi span:nth-child(1){color:var(--accent1)}
-.multi span:nth-child(2){color:var(--accent2)}
-.multi span:nth-child(3){color:var(--accent3)}
-.multi span:nth-child(4){color:var(--accent4)}
-@keyframes pop{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
-.hero p{margin-top:12px;opacity:0.9}
-.cta-row{margin-top:18px;display:flex;gap:10px}
-.btn{padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
-.btn-primary{background:linear-gradient(90deg,var(--accent3),var(--accent4));color:#042;}
-.btn-outline{background:transparent;border:2px solid rgba(0,0,0,0.06)}
-
-
-/* CARD / INFO */
-.card{padding:18px;border-radius:12px;box-shadow:0 10px 30px rgba(20,20,20,0.04);background:linear-gradient(180deg,rgba(255,255,255,0.9), #fff)}
-
-
-/* SERVICES */
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.service{padding:18px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.8),#fff);box-shadow:0 6px 20px rgba(0,0,0,0.04);transition:transform .18s ease}
-.service:hover{transform:translateY(-6px)}
-
-
-/* GALLERY */
-.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.gallery-item{overflow:hidden;border-radius:8px;min-height:80px}
-.gallery-item img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s ease}
-.gallery-item:hover img{transform:scale(1.06)}
-
-
-/* CONTACT */
-.contact-form{max-width:560px}
-.field{display:flex;flex-direction:column;margin-bottom:12px}
-.field label{font-size:0.9rem;margin-bottom:6px}
-.field input,.field textarea{padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.08);font-size:0.95rem}
-.field textarea{min-height:120px;resize:vertical}
-
-
-/* footer */
-footer{padding:20px 0;text-align:center;opacity:0.7}
-
-
-/* responsive */
-@media (max-width:900px){
-.hero{grid-template-columns:1fr}
-.services-grid{grid-template-columns:repeat(2,1fr)}
-.gallery-grid{grid-template-columns:repeat(3,1fr)}
-}
-@media (max-width:600px){
-.nav-links{display:none}
-header{padding:0 12px}
-.logo{font-size:1rem}
-.services-grid{grid-template-columns:1fr}
-.gallery-grid{grid-template-columns:repeat(2,1fr)}
-}
-
-
-/* page show/hide animation */
+</div></body>
 </html>
